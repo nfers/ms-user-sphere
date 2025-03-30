@@ -4,12 +4,14 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NonNull;
 
+import java.util.List;
+
 @Data
 @NotNull
 public class UserRequest {
     private String name;
     private String email;
     private String password;
-    private String role;
+    private List<String> roles;
 }
 

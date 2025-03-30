@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.repository.Update;
 
 import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Document(collection = "users")
@@ -24,7 +25,7 @@ public class User {
 
     private String password;
 
-    private String role;
+    private List<Role> roles;
     private boolean active;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate = LocalDateTime.now();
