@@ -20,25 +20,33 @@ repositories {
 
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    // Spring Boot Starters (WebFlux + Security + MongoDB)
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+    // JWT (APENAS jjwt-api como implementation, o resto runtimeOnly)
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+	implementation 'ch.qos.logback:logback-classic'
+	
+    configurations.all {
+        exclude group: 'org.apache.logging.log4j'
+        exclude group: 'org.slf4j', module: 'slf4j-simple'
+    }
 
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'io.projectreactor:reactor-test'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
+    // Testes
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
 tasks.named('test') {
@@ -46,5 +54,5 @@ tasks.named('test') {
 }
 
 application {
-	mainClass = 'io.github.nfers.ms_user_sphere.UserSphereApplication'
+	mainClass = 'io.github.nfers.ms_user_sphere.MsUserSphereApplication'
 }
