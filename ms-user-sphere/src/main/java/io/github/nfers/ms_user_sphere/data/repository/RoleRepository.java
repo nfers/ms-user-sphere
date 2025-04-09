@@ -10,7 +10,5 @@ import java.util.List;
 public interface RoleRepository extends ReactiveMongoRepository<Role, String> {
     Mono<Role> findByName(String name);
 
-    Flux<Role> findAllRoles();
-
-    Flux<Role> finAllByNameIn(List<String> names);
+    Flux<Role> findAllByName(List<String> names);
 }
