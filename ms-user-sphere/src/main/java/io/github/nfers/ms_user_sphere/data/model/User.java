@@ -1,6 +1,7 @@
 package io.github.nfers.ms_user_sphere.data.model;
 
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
 @Document(collection = "users")
 public class User {
 

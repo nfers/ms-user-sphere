@@ -7,6 +7,7 @@ import io.github.nfers.ms_user_sphere.data.model.Role;
 import io.github.nfers.ms_user_sphere.data.model.User;
 import io.github.nfers.ms_user_sphere.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -21,11 +22,16 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     public Flux<UserResponse> findAll() {
         return userRepository.findAll()
                 .map(user -> new UserResponse(
-                        user.getId(),
                         user.getName(),
                         user.getEmail(),
                         user.getRoles().stream()
@@ -38,28 +44,26 @@ public class UserService {
 
 
     public Mono<UserResponse> saveUser(UserRequest userRequest) {
-
-        var user = new User();
-
-        user.setName(userRequest.getName());
-        user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
-        user.setRoles(List.of());
-        user.setCreatedDate(LocalDateTime.now());
-        user.setActive(true);
-
-
-        return userRepository.save(user)
-                .map(savedUser -> new UserResponse(
-                        savedUser.getId(),
-                        savedUser.getName(),
-                        savedUser.getEmail(),
-                        savedUser.getRoles().stream()
-                                .map(role -> role.getName().toString())
-                                .collect(Collectors.toList()),
-                        savedUser.getCreatedDate(),
-                        savedUser.isActive()
-                ));
+        return userRepository.findByEmail(userRequest.getEmail())
+                .flatMap(__ -> Mono.error(new IllegalArgumentException("Email já existe")))
+                .switchIfEmpty(
+                        roleService
+                                .convertRoleNamesToRoles(userRequest.getRoleNames())
+                                .flatMap(roles -> userRepository.save(
+                                        User.builder()
+                                                .name(userRequest.getName())
+                                                .email(userRequest.getEmail())
+                                                .password(passwordEncoder
+                                                        .encode(userRequest.getPassword()))
+                                                .roles(roles)
+                                                .createdDate(LocalDateTime.now())
+                                                .updatedDate(LocalDateTime.now())
+                                                .active(true)
+                                                .build()
+                                ))
+                )
+                .cast(User.class)
+                .map(UserResponse::from);
     }
 
     public Mono<Void> deleteUser(String id) {
@@ -69,7 +73,6 @@ public class UserService {
     public Mono<UserResponse> findById(String id) {
         return userRepository.findById(id)
                 .map(user -> new UserResponse(
-                        user.getId(),
                         user.getName(),
                         user.getEmail(),
                         user.getRoles().stream()

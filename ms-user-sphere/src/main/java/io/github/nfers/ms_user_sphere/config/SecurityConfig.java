@@ -12,19 +12,19 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
-        return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers("/auth/**").permitAll()
-                        .pathMatchers("/users/**").authenticated() 
-                        .anyExchange().authenticated() 
-                )
-                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
-                .build();
-    }
+        @Bean
+        public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+            return http
+                    .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                    .authorizeExchange(exchanges -> exchanges
+                            .pathMatchers("/v1/auth/**").permitAll()
+                            .pathMatchers("/users/**").authenticated()
+                            .anyExchange().authenticated()
+                    )
+                    .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+                    .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+                    .build();
+        }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
