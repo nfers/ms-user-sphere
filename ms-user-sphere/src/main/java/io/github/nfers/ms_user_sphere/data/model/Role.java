@@ -3,7 +3,6 @@ package io.github.nfers.ms_user_sphere.data.model;
 import io.github.nfers.ms_user_sphere.data.RoleName;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Generated;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;

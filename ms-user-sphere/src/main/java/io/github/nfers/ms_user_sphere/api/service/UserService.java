@@ -2,8 +2,6 @@ package io.github.nfers.ms_user_sphere.api.service;
 
 import io.github.nfers.ms_user_sphere.api.request.UserRequest;
 import io.github.nfers.ms_user_sphere.api.response.UserResponse;
-import io.github.nfers.ms_user_sphere.data.RoleName;
-import io.github.nfers.ms_user_sphere.data.model.Role;
 import io.github.nfers.ms_user_sphere.data.model.User;
 import io.github.nfers.ms_user_sphere.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service

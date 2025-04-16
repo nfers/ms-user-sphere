@@ -27,5 +27,5 @@ public class User {
     private List<Role> roles;
     private boolean active;
     private LocalDateTime createdDate;
-    private LocalDateTime updatedDate = LocalDateTime.now();
+    private LocalDateTime updatedDate;
 }
